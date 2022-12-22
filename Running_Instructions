@@ -1,0 +1,4 @@
+export NODE_OPTIONS=--openssl-legacy-provider
+npx hardhat node
+npx hardhat run src/backend/scripts/deploy.js --network localhost
+npx hardhat console
