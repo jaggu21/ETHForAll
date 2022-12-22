@@ -28,6 +28,7 @@ contract DRate{
         address author; 
         uint256 rating; 
         uint256 numberOfRatings; 
+        string posterURL; 
     }   
 
     //trigger event 
@@ -40,7 +41,8 @@ contract DRate{
         Tag tags, 
         address author,
         uint256 rating,
-        uint256 numberOfRatings
+        uint256 numberOfRatings,
+        string posterURL
     );
 
     //function to add an event
@@ -49,7 +51,8 @@ contract DRate{
         string memory _eventName, 
         string memory _eventDescription, 
         Language _language,
-        Tag _tags
+        Tag _tags,
+        string memory _posterURL
     ) public {
         require(bytes(_eventName).length > 0);
         require(bytes(_eventDescription).length > 0);
@@ -67,7 +70,8 @@ contract DRate{
             _tags, 
             msg.sender,
             0,
-            0
+            0,
+            _posterURL
         );
 
         //Trigger the event
@@ -80,7 +84,8 @@ contract DRate{
             _tags, 
             msg.sender,
             0,
-            0
+            0,
+            _posterURL
         );
     }
 

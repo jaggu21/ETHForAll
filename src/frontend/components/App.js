@@ -4,6 +4,7 @@ import {useState} from 'react';
 import Navigation from './Navbar';
 import UncontrolledExample from './Carousel';
 import Explore from './Explore';
+import TopRated from './TopRated';
 
 
 import {ethers} from "ethers"; 
@@ -11,6 +12,8 @@ import DRateAbi from "../contractsData/DRate.json";
 import DRateAddress from "../contractsData/DRate-address.json"; 
 import { BrowserRouter } from 'react-router-dom';
 import { Container,Row,Col,Button,Card} from 'react-bootstrap';
+import Footer from './Footer';
+
 
 
 function App() {
@@ -46,7 +49,14 @@ function App() {
         <h3 style={{marginTop:"2vw",marginRight:"15vw",marginLeft:"15vw",color:"#FCE44D"}}>|| Explore</h3>
         <h5 style={{marginTop:".1vw",marginRight:"15vw",marginLeft:"15vw",color:"white"}}>Getting bored? Why don't you try these out?</h5>
         <Explore />
+
         
+        <h3 style={{marginTop:"2vw",marginRight:"15vw",marginLeft:"15vw",color:"#FCE44D"}}>|| Top Rated</h3>
+        <h5 style={{marginTop:".1vw",marginRight:"15vw",marginLeft:"15vw",color:"white"}}>DRate Top movies as rated by regular DRate voters</h5>
+        <TopRated />
+
+        
+        <Footer/>
       </div>
     </BrowserRouter>
   );
