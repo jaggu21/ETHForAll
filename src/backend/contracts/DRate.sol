@@ -68,7 +68,7 @@ contract DRate{
             _eventDescription,
             _language, 
             _tags, 
-            msg.sender,
+            msg.sender,//skipped in return statement
             0,
             0,
             _posterURL
@@ -91,5 +91,38 @@ contract DRate{
 
     //constructor
     constructor() {}
+
+    //get movie by name
+    function getMovieByName(string memory _eventName) public view returns(
+        uint256,
+        EventType,
+        string memory,
+        string memory,
+        Language,
+        Tag,
+        uint256,
+        uint256,
+        string memory
+    ){
+        require(bytes(_eventName).length > 0);   
+
+        for(uint256 i = 0;i<eventID;i++){
+            if(keccak256(abi.encodePacked(allEvents[i].eventName)) == keccak256(abi.encodePacked(_eventName))){
+                return (
+                    allEvents[i].eventID,
+                    allEvents[i].eventType,
+                    allEvents[i].eventName,
+                    allEvents[i].eventDescription,
+                    allEvents[i].language,
+                    allEvents[i].tags,
+                    allEvents[i].rating,
+                    allEvents[i].numberOfRatings,
+                    allEvents[i].posterURL 
+                ); 
+            }
+        }
+
+        return (0,EventType.MOVIE,"","",Language.ENGLISH,Tag.ACTION,0,0,""); 
+    }
 
 }

@@ -3,7 +3,7 @@ import {
 } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from 'react-bootstrap'
 // import market from './market.png'
-import drate from "../Assets/Logo/drate-low-resolution-color-logo.png"
+import drate from "../../Assets/Logo/drate-low-resolution-color-logo.png"
 
 const Navigation = ({ web3Handler, account }) => {
     return (
@@ -17,7 +17,7 @@ const Navigation = ({ web3Handler, account }) => {
                     <Nav variant = "tabs" className="me-auto">
                         <Nav.Link as={Link} to="/">Home</Nav.Link>
                         <Nav.Link as={Link} to="/">Add Review</Nav.Link>
-                        <Nav.Link as={Link} to="/">Add Movie/Series</Nav.Link>
+                        <Nav.Link as={Link} to="/create">Add Movie/Series</Nav.Link>
                     </Nav>
                     <Nav>
                         {account ? (
@@ -32,7 +32,7 @@ const Navigation = ({ web3Handler, account }) => {
 
                             </Nav.Link>
                         ) : (
-                            <Button onClick={web3Handler} variant="outline-light">Connect Wallet</Button>
+                            <Button onClick={web3Handler} variant="outline-light" style={{background:"#FCE44D",color:"black"}}>Login</Button>
                         )}
                     </Nav>
                 </Navbar.Collapse>

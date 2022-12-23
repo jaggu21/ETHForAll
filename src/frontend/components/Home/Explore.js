@@ -1,5 +1,5 @@
 import { Container,Row,Col,Button,Card} from 'react-bootstrap';
-import "./Card.css"
+import "../Styles/Card.css"
 
 
 function Explore(){
