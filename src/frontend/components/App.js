@@ -7,6 +7,7 @@ import Explore from './Home/Explore';
 import TopRated from './Home/TopRated';
 
 import { AuthProvider, CHAIN } from '@arcana/auth'
+
 import {ethers} from "ethers"; 
 import DRateAbi from "../contractsData/DRate.json"; 
 import DRateAddress from "../contractsData/DRate-address.json"; 
@@ -22,7 +23,6 @@ function App() {
   const [loading,setLoading] = useState(true); 
   const [account,setAccount] = useState(""); 
   const [drate,setDRate] = useState(); 
-  
 
   const web3Handler = async() => { 
     const accounts = await window.ethereum.request({method: 'eth_requestAccounts'}); 

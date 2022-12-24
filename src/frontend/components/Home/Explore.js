@@ -1,4 +1,5 @@
 import { Container,Row,Col,Button,Card} from 'react-bootstrap';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 import "../Styles/Card.css"
 
 
@@ -14,6 +15,7 @@ function Explore(){
                 <div className='d-grid'>
                     <Button size="lg" style={{background:"#FCE44D",color:"black"}}>
                     Add To Watchlist
+                    <ProgressBar variant="danger" animated label={`4.8⭐`} now={95} />
                     </Button>
                 </div>
                 </Card.Footer>
@@ -27,6 +29,7 @@ function Explore(){
                 <div className='d-grid'>
                     <Button size="lg" style={{background:"#FCE44D",color:"black"}}>
                     Add To Watchlist
+                    <ProgressBar variant="danger" animated label={`4.7⭐`} now={90} />
                     </Button>
                 </div>
                 </Card.Footer>
@@ -40,6 +43,7 @@ function Explore(){
                 <div className='d-grid'>
                     <Button size="lg" style={{background:"#FCE44D",color:"black"}}>
                     Add To Watchlist
+                    <ProgressBar variant="danger" animated label={`4.5⭐`} now={80} />
                     </Button>
                 </div>
                 </Card.Footer>
@@ -53,6 +57,7 @@ function Explore(){
                 <div className='d-grid'>
                     <Button size="lg" style={{background:"#FCE44D",color:"black"}}>
                     Add To Watchlist
+                    <ProgressBar variant="danger" animated label={`4.3⭐`} now={75} />
                     </Button>
                 </div>
                 </Card.Footer>
@@ -67,6 +72,7 @@ function Explore(){
                 <div className='d-grid'>
                     <Button size="lg" style={{background:"#FCE44D",color:"black"}}>
                     Add To Watchlist
+                    <ProgressBar variant="danger" animated label={`4⭐`} now={60} />
                     </Button>
                 </div>
                 </Card.Footer>

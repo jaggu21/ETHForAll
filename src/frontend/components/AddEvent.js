@@ -17,43 +17,44 @@ const Create = ({web3Handler,account,drate}) => {
 
   const uploadToIPFS = async (event) => {
     console.log("Uploading File to IPFS")
-    // //loading files
-    // event.preventDefault()
-    // const file = event.target.files[0];
+    //loading files
+    event.preventDefault()
+    const file = event.target.files[0];
 
-    // const form = new FormData();
-    // //const fileStream = fs.createReadStream(file.name,{encoding: 'UTF-8'});
-    // form.append('file', file);
+    const form = new FormData();
+    //const fileStream = fs.createReadStream(file.name,{encoding: 'UTF-8'});
+    form.append('file', file);
 
-    // if (typeof file !== 'undefined') {
-    //   try {
-    //     const options = {
-    //         method: 'POST',
-    //         body: form,
-    //         headers: {
-    //           'Authorization': NFTPortPrivateKey,
-    //         },
-    //       };
+    if (typeof file !== 'undefined') {
+      try {
+        const options = {
+            method: 'POST',
+            body: form,
+            headers: {
+              'Authorization': NFTPortPrivateKey,
+            },
+          };
           
 
-    //     fetch('https://api.nftport.xyz/v0/files', options)
-    //         .then(response => {
-    //           return response.json()
-    //         })
-    //         .then(responseJson => {
-    //           // Handle the response
-    //           console.log(responseJson);
-    //           setImage(responseJson['ipfs_url']);
-    //     })
-    //   } catch (error){
-    //     console.log("ipfs image upload error: ", error)
-    //   }
-    // }
+        fetch('https://api.nftport.xyz/v0/files', options)
+            .then(response => {
+              return response.json()
+            })
+            .then(responseJson => {
+              // Handle the response
+              console.log(responseJson);
+              setImage(responseJson['ipfs_url']);
+        })
+      } catch (error){
+        console.log("ipfs image upload error: ", error)
+      }
+    }
   }
 
   const addNewEvent = async() =>{
-    const result = await(await drate.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image)).wait()
-    console.log(result)
+    // const result = await(await drate.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image)).wait()
+    // console.log(result)
+    const value = drate.getMovieByName("Test Movie")
   }
 
   return (
@@ -104,7 +105,7 @@ const Create = ({web3Handler,account,drate}) => {
 
 
               <div className="d-grid px-0">
-                <Button onClick={addNewEvent} variant="primary" size="lg">
+                <Button onClick={addNewEvent} style={{background:"#FCE44D",color:"black"}} size="lg">
                     Add Event
                   </Button>
               </div>
