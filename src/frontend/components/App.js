@@ -1,29 +1,42 @@
 
 import './Styles/App.css';
-import {useState} from 'react'; 
-import Navigation from './Home/Navbar';
-import UncontrolledExample from './Home/Carousel';
-import Explore from './Home/Explore';
-import TopRated from './Home/TopRated';
+import {useEffect, useState} from 'react'; 
 
-import { AuthProvider, CHAIN } from '@arcana/auth'
 
+import { AppMode,AuthProvider, CHAIN } from '@arcana/auth'
 import {ethers} from "ethers"; 
 import DRateAbi from "../contractsData/DRate.json"; 
 import DRateAddress from "../contractsData/DRate-address.json"; 
 import { BrowserRouter,Route,Routes} from 'react-router-dom';
 import { Container,Row,Col,Button,Card} from 'react-bootstrap';
-import Footer from './Home/Footer';
 import Home from './Home';
 import Create from './AddEvent';
+
+import {useLivepeerProvider} from "@livepeer/react";
+import { Auth, useAuth } from "@arcana/auth-react";
+
+
 
 
 
 function App() {
   const [loading,setLoading] = useState(true); 
+  const [loggedIn,setLoggedIn] = useState(false); 
   const [account,setAccount] = useState(""); 
-  const [drate,setDRate] = useState(); 
+  const [drate,setDRate] = useState();   
+  const auth = useAuth();
+  
+  const provider = useLivepeerProvider()
 
+  useEffect(()=>{
+    console.log(auth)
+  })
+
+  const onLogin = () => {
+    console.log("Logged In")
+  }
+  
+  
   const web3Handler = async() => { 
     const accounts = await window.ethereum.request({method: 'eth_requestAccounts'}); 
     const provider  = new ethers.providers.Web3Provider(window.ethereum)
@@ -42,11 +55,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-              <Route path="/" element={<Home web3Handler={web3Handler} account={account}/>} />
-              <Route path="/create" element={<Create web3Handler={web3Handler} account={account} drate={drate} />}/>
-      </Routes>
-      
+      {auth.loading ? (
+          "Loading"
+        ) : auth.isLoggedIn ? (
+          <Routes>
+            <Route path="/" element={<Home web3Handler={web3Handler} account={account}/>} />
+            <Route path="/create" element={<Create web3Handler={web3Handler} account={account} drate={drate} />}/>
+          </Routes>
+        ) : (
+          <div>
+             <Auth externalWallet={true} theme={"light"} onLogin={onLogin}/>
+          </div>
+      )}
     </BrowserRouter>
   );
 }

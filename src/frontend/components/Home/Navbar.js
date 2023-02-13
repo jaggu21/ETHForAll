@@ -4,11 +4,19 @@ import {
 import { Navbar, Nav, Button, Container } from 'react-bootstrap'
 // import market from './market.png'
 import drate from "../../Assets/Logo/drate-low-resolution-color-logo.png"
+import makeBlockie from 'ethereum-blockies-base64';
+
+
 
 const Navigation = ({ web3Handler, account }) => {
+    const blockie  = () =>{
+        return <img src={makeBlockie("8f39B2De2a23D70a74AB3325025eB0b2167C9F27")}/>
+    }
+
     return (
         <Navbar expand="lg" bg="dark" variant="dark">
             <Container>
+                
                 <Navbar.Brand href="/">
                     <img src={drate} width="60" height="40" className="" alt="" />
                 </Navbar.Brand>
@@ -32,7 +40,10 @@ const Navigation = ({ web3Handler, account }) => {
 
                             </Nav.Link>
                         ) : (
-                            <Button onClick={web3Handler} variant="outline-light" style={{background:"#FCE44D",color:"black"}}>Login</Button>
+                            <div>
+                                <img style={{height:"2vw",width:"2vw",marginRight:"1vw"}} src={makeBlockie("8f39B2De2a23D70a74AB3325025eB0b2167C9F27")}/>
+                                <Button onClick={web3Handler} variant="outline-light" style={{background:"#FCE44D",color:"black"}}>Sign Out</Button>
+                            </div>
                         )}
                     </Nav>
                 </Navbar.Collapse>

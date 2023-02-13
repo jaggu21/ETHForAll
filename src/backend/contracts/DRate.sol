@@ -53,7 +53,7 @@ contract DRate{
         Language _language,
         Tag _tags,
         string memory _posterURL
-    ) public {
+    ) payable public {
         require(bytes(_eventName).length > 0);
         require(bytes(_eventDescription).length > 0);
 

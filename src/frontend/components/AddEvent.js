@@ -52,8 +52,8 @@ const Create = ({web3Handler,account,drate}) => {
   }
 
   const addNewEvent = async() =>{
-    const result = await(await drate.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image)).wait()
-    console.log(result)
+    await(await drate.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image)).wait()
+    // console.log(result)
     // const value = drate.getMovieByName("Test Movie")
   }
 
