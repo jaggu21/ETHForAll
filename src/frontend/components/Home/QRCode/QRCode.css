@@ -1,0 +1,11 @@
+.qr-data{
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .qr-code{
+    padding: 15px;
+  }

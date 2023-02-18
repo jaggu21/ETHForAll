@@ -3,6 +3,8 @@ npx hardhat node
 npx hardhat run src/backend/scripts/deploy.js --network localhost
 npx hardhat console
 
+npx hardhat run src/backend/scripts/deploy.js --network polygon_mumbai
+
 Polygon-ID:
-Contract-Address - erc721Deplot.js: 0x3F5735FDb6d16eD212aF437BBDc1fF4b47F99C94
-Contract-Address - erc721zkpRequest.js - 0xa2c0111377b54bf94c8e87c46a0ee3b434f42a5a9c9827f5110e2caa23c5e656
+Contract-Address - erc721Deplot.js: 0x6497fE0Dc202AbABE8dDF081b1A8BB8a5018Ca2E (Polygon mumbai)
+Contract-Address - erc721zkpRequest.js - 0xc108e3ae375b0414d6c08b4cac1ae0beb932ab8cef771f40286195690efbc886(Polygon mumbai)

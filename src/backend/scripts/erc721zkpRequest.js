@@ -23,7 +23,7 @@ const main = async () => {
     // - typically found in https://platform-test.polygonid.com/claiming/created-schemas
     const schemaHash = "8571f05547ebcad005bca29da4585f28"; // extracted from PID Platform
     // Deployed contract address
-    const ERC721VerifierAddress = "0x3F5735FDb6d16eD212aF437BBDc1fF4b47F99C94";
+    const ERC721VerifierAddress = "0x6497fE0Dc202AbABE8dDF081b1A8BB8a5018Ca2E";
     const schemaEnd = fromLittleEndian(hexToBytes(schemaHash));
     const query = {
         schema: ethers.BigNumber.from(schemaEnd),

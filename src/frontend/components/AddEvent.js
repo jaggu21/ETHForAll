@@ -3,17 +3,36 @@ import { ethers } from "ethers"
 import { Row, Form, Button, Container } from 'react-bootstrap'
 import Navigation from './Home/Navbar';
 import Footer from './Home/Footer';
+import { useCreateAsset } from '@livepeer/react';
+
 import Explore from './Home/Explore';
 
 const NFTPortPrivateKey = `77bec83c-36ac-4130-8a24-d7ad6cc8b8c4`
 
-const Create = ({web3Handler,account,drate}) => {
+
+const Create = ({web3Handler,account,drate,auth}) => {
   const [image, setImage] = useState('')
   const [eventType,setEventType] = useState() 
   const [name,setName] = useState()
   const [description,setDescription] = useState()
   const [language,setLanguage] = useState()
   const [tag,setTag] = useState() 
+  const [video,setVideo] = useState()
+
+  const {
+    mutate: createAsset,
+    data: asset,
+    status,
+    progress,
+    error,
+  } = useCreateAsset(
+    video
+      ? {
+          sources: [{ name: video.name, file: video }],
+        }
+      : null,
+  );
+ 
 
   const uploadToIPFS = async (event) => {
     console.log("Uploading File to IPFS")
@@ -51,10 +70,9 @@ const Create = ({web3Handler,account,drate}) => {
     }
   }
 
+
   const addNewEvent = async() =>{
     await(await drate.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image)).wait()
-    // console.log(result)
-    // const value = drate.getMovieByName("Test Movie")
   }
 
   return (
@@ -103,6 +121,15 @@ const Create = ({web3Handler,account,drate}) => {
 
               <Form.Control onChange={(e) => setDescription(e)} style={{background:"black",height:"4vw",color:"#FCE44D"}} required type="textarea" rows="5" placeholder="Event Description"/>
 
+              <Form.Control type="file" style={{background:"black",color:"#FCE44D"}} required name="file" 
+                onChange={(e) => {
+                  if (e.target.files) {
+                    console.log("Uploading Video")
+                    setVideo(e.target.files[0]);
+                    createAsset?.();
+                  }
+                }}
+              />
 
               <div className="d-grid px-0">
                 <Button onClick={addNewEvent} style={{background:"#FCE44D",color:"black"}} size="lg">

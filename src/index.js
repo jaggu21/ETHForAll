@@ -2,11 +2,22 @@ import { render } from "react-dom";
 import 'bootstrap/dist/css/bootstrap.css'
 import App from './frontend/components/App';
 import * as serviceWorker from './serviceWorker';
-import { AuthProvider } from "@arcana/auth";
+import { AuthProvider, CHAIN } from "@arcana/auth";
 import { ProvideAuth } from "@arcana/auth-react";
 import { createReactClient,studioProvider,LivepeerConfig } from "@livepeer/react";
 
-const provider = new AuthProvider(`3fed620422308576aa17dbdf76df0bab8c715c69`) // required
+const appAddress = '3fed620422308576aa17dbdf76df0bab8c715c69' 
+const auth = new AuthProvider(`${appAddress}`, { //required
+      network: 'testnet', //defaults to 'testnet'
+      position: 'left', //defaults to right
+      theme: 'light', //defaults to dark
+      alwaysVisible: false, //defaults to true which is Full UI mode
+      chainConfig: {
+        chainId: CHAIN.POLYGON_MUMBAI_TESTNET, //defaults to CHAIN.ETHEREUM_MAINNET
+        rpcUrl: 'https://polygon-mumbai.g.alchemy.com/v2/-Q3bwbk7Y-wznNCM9wzRsSffp7R8zNUs', //defaults to 'https://rpc.ankr.com/eth'
+      },
+})
+
 const client = createReactClient({
     provider:studioProvider({
         apiKey: "805433f7-f582-43f4-9b5c-4e1ccd023bb0"
@@ -15,9 +26,9 @@ const client = createReactClient({
 
 const rootElement = document.getElementById("root");
 render(
-    <ProvideAuth provider={provider}>
+    <ProvideAuth provider={auth}>
         <LivepeerConfig client={client}>
-            <App />
+            <App auth={auth}/>
         </LivepeerConfig>
     </ProvideAuth>,
 rootElement);
