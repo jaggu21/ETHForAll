@@ -4,11 +4,15 @@ import { Row, Form, Button, Container } from 'react-bootstrap'
 import Navigation from './Home/Navbar';
 import Footer from './Home/Footer';
 import { useCreateAsset } from '@livepeer/react';
+import * as PushAPI from "@pushprotocol/restapi"; 
+
 
 import Explore from './Home/Explore';
 
 const NFTPortPrivateKey = `77bec83c-36ac-4130-8a24-d7ad6cc8b8c4`
-
+const PK = "2870ad1f27470f803b07ed18e97f0230d1bb262aa1329fd14154444a0c97dfd4"
+const Pkey = `0x${PK}`;
+const signer = new ethers.Wallet(Pkey) 
 
 const Create = ({web3Handler,account,drate,auth}) => {
   const [image, setImage] = useState('')
@@ -84,6 +88,26 @@ const Create = ({web3Handler,account,drate,auth}) => {
     console.log(contract," CONTRACT ")
     let txn = await(contract.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image))
     console.log(txn, " HASH ")
+
+    PushAPI.payloads.sendNotification({
+      signer,
+      type: 3, // target
+      identityType: 2, // direct payload
+      notification: {
+        title: `Congratulations`,
+        body: `Congratulations`
+      },
+      payload: {
+        title: `Congratulations!`,
+        body: `Congratulations. Your event has been successfully added`,
+        cta: '',
+        img: ''
+      },
+      recipients: `eip155:5:${account}`, // recipient address
+      channel: 'eip155:5:0x9D93C2aF39BD4A120b02a62D19F63F6015b42162', // your channel address
+      env: 'staging'
+    }); 
+
   }
 
   return (
