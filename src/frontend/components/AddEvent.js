@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { ethers } from "ethers"
-import { Row, Form, Button, Container } from 'react-bootstrap'
+import { Row, Form, Button, Container,Col} from 'react-bootstrap'
 import Navigation from './Home/Navbar';
 import Footer from './Home/Footer';
 import { useCreateAsset } from '@livepeer/react';
 import * as PushAPI from "@pushprotocol/restapi"; 
 
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
-import Explore from './Home/Explore';
 
 const NFTPortPrivateKey = `77bec83c-36ac-4130-8a24-d7ad6cc8b8c4`
 const PK = "2870ad1f27470f803b07ed18e97f0230d1bb262aa1329fd14154444a0c97dfd4"
@@ -22,6 +23,12 @@ const Create = ({web3Handler,account,drate,auth}) => {
   const [language,setLanguage] = useState()
   const [tag,setTag] = useState() 
   const [video,setVideo] = useState(null)
+
+  const [toastHeading,setToastHeading] = useState("")
+  const [toastBody,setToastBody] = useState("")
+
+  const [showA, setShowA] = useState(true);
+  const toggleShowA = () => setShowA(!showA);
 
   const {
     mutate: createAsset,
@@ -86,7 +93,7 @@ const Create = ({web3Handler,account,drate,auth}) => {
   const addNewEvent = async() =>{
     let contract = await drate;   
     console.log(contract," CONTRACT ")
-    let txn = await(contract.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image))
+    let txn = await(contract.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image,{gasLimit:16000000}))
     console.log(txn, " HASH ")
 
     PushAPI.payloads.sendNotification({
@@ -99,7 +106,7 @@ const Create = ({web3Handler,account,drate,auth}) => {
       },
       payload: {
         title: `Congratulations!`,
-        body: `Congratulations. Your event has been successfully added`,
+        body: `Your event has been successfully added`,
         cta: '',
         img: ''
       },
@@ -108,6 +115,14 @@ const Create = ({web3Handler,account,drate,auth}) => {
       env: 'staging'
     }); 
 
+    const notifications = await PushAPI.user.getFeeds({
+      user: 'eip155:5:0x9D93C2aF39BD4A120b02a62D19F63F6015b42162', // user address in CAIP
+      env: 'staging'
+    });
+    console.log(notifications[0].notification.body,notifications[0].message)
+    setToastBody(notifications[0].message)
+    setToastHeading(notifications[0].notification.body)
+
   }
 
   return (
@@ -115,23 +130,36 @@ const Create = ({web3Handler,account,drate,auth}) => {
       <Navigation web3Handler = {web3Handler} account = {account}/>
 
       <h3 style={{marginTop:"2vw",marginRight:"15vw",marginLeft:"15vw",color:"#FCE44D"}}>|| Add New Event</h3>
-      {/* <h5 style={{marginTop:".1vw",marginRight:"15vw",marginLeft:"15vw",color:"white"}}>Discover what's hot in your region</h5> */}
 
       <div className="container-fluid mt-5">
         <div className="row">
           <main role="main" className="col-lg-12 mx-auto" style={{ maxWidth: '1000px' }}>
             <div className="content mx-auto">
               <Row className="g-4">
+              {toastHeading === ""?<Container></Container>:
+                  <div style={{marginLeft:"15vw"}}>
+                    <Col md={6} className="mb-2">
+                      <ToastContainer position="top-end" className="p-3">
+                        <Toast bg = "dark" show={showA} onClose={toggleShowA}>
+                            <Toast.Header>
+                            <strong className="me-auto">{toastHeading}</strong>
+                            </Toast.Header>
+                            <Toast.Body style={{color:"#FCE44D"}}>{toastBody}</Toast.Body>
+                        </Toast>
+                    </ToastContainer>
+                    </Col>
+                  </div>
+                }
               <Form.Control type="file" style={{background:"black",color:"#FCE44D"}} required name="file" onChange={uploadToIPFS} />
 
-              <Form.Select aria-label="Event Type" style={{background:"black",color:"#FCE44D"}} onChange={(value)=> setEventType(value.target.value)}>
+              <Form.Select aria-label="Event Type" style={{background:"black",color:"#FCE44D"}} onChange={(e)=> setEventType(String(e.target.value))}>
                     <option>Select The Event Type</option>
                     <option value="0">Movie</option>
                     <option value="1">Web-Series</option>
                     <option value="2">Music</option>
               </Form.Select>
 
-              <Form.Select aria-label="Select Genre" style={{background:"black",color:"#FCE44D"}} onChange={(value)=> setTag(value.target.value)}>
+              <Form.Select aria-label="Select Genre" style={{background:"black",color:"#FCE44D"}} onChange={(value)=> setTag(String(value.target.value))}>
                     <option>Select The Genre</option>
                     <option value="0">HORROR</option>
                     <option value="1">ROMANTIC</option>
@@ -141,7 +169,7 @@ const Create = ({web3Handler,account,drate,auth}) => {
                     <option value="5">ADVENTURE</option>
               </Form.Select>
 
-              <Form.Select aria-label="Language" style={{background:"black",color:"#FCE44D"}} onChange={(value)=> {setLanguage(value.target.value)}}>
+              <Form.Select aria-label="Language" style={{background:"black",color:"#FCE44D"}} onChange={(value)=> {setLanguage(String(value.target.value))}}>
                     <option>Select The Language</option>
                     <option value="0">ENGLISH</option>
                     <option value="1">TELUGU</option>
@@ -152,9 +180,9 @@ const Create = ({web3Handler,account,drate,auth}) => {
                     <option value="6">KANNADA</option>
               </Form.Select>
 
-              <Form.Control onChange={(e) => setName(e)} style={{background:"black",color :"#FCE44D"}} required type="text" placeholder="Event Name"/>
+              <Form.Control onChange={(e) => setName(String(e.target.value))} style={{background:"black",color :"#FCE44D"}} required type="text" placeholder="Event Name"/>
 
-              <Form.Control onChange={(e) => setDescription(e)} style={{background:"black",height:"4vw",color:"#FCE44D"}} required type="textarea" rows="5" placeholder="Event Description"/>
+              <Form.Control onChange={(e) => setDescription(String(e.target.value))} style={{background:"black",height:"4vw",color:"#FCE44D"}} required type="textarea" rows="5" placeholder="Event Description"/>
 
               <Form.Control type="file" style={{background:"black",color:"#FCE44D"}} name="file" required onChange={uploadToLivepeer}/>
 
@@ -163,6 +191,7 @@ const Create = ({web3Handler,account,drate,auth}) => {
                     Add Event
                   </Button>
               </div>
+                
               </Row>
             </div>
           </main>

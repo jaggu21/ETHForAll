@@ -8,6 +8,9 @@ contract DRate{
     //mapping of eventID to event 
     mapping(uint256 => CustomEvent) public allEvents; 
 
+    // Array of all events
+    CustomEvent[] public events;
+
     //enum for eventType
     enum EventType{MOVIE, SERIES, MUSIC} 
 
@@ -16,6 +19,12 @@ contract DRate{
 
     //enum for Language
     enum Language{ENGLISH, TELUGU, HINDI, TAMIL, MALAYALAM, MARATHI, KANNADA}
+
+    //mapping for users balances
+    mapping(address => uint256) public _balances;
+
+    //mapping for users voted
+    mapping(address => bool) public _voted;
 
     //custom event   
     struct CustomEvent{
@@ -74,6 +83,11 @@ contract DRate{
             _posterURL
         );
 
+        //add the new event to the array
+        events.push(allEvents[eventID]);
+
+        _balances[msg.sender] += 50;
+
         //Trigger the event
         emit EventAdded(
             eventID,
@@ -91,6 +105,34 @@ contract DRate{
 
     //constructor
     constructor() {}
+
+    //QV function for rating
+    function QVRating(uint256 _eventID, uint numVotes, uint rating) public {
+        require(numVotes > 0, "Number of votes should be greater than zero");
+        require(rating > 0 && rating <= 10, "Rating should be between range of 1 - 10");
+        require(_eventID > 0 && _eventID <= eventID, "EventID will be between 1 and eventID");
+
+        if(_voted[msg.sender] == false){
+            _voted[msg.sender] = true;
+            _balances[msg.sender] += 100;
+        }
+
+        uint256 numTokens = numVotes * numVotes;
+
+        //check if the user has enough tokens
+        require(_balances[msg.sender] >= numTokens, "Not enough balance to vote");
+
+        //update the user's balance
+        _balances[msg.sender] -= numTokens;
+
+        //update the event's rating
+        events[eventID-1].rating = (allEvents[eventID].rating * allEvents[eventID].numberOfRatings + rating * numVotes) * 1000 / (allEvents[eventID].numberOfRatings + numVotes);
+
+        //update the event's number of ratings
+        events[eventID-1].numberOfRatings += numVotes;
+    }
+        
+
 
     //get movie by name
     function getMovieByName(string memory _eventName) public view returns(
@@ -124,5 +166,7 @@ contract DRate{
 
         return (0,EventType.MOVIE,"","",Language.ENGLISH,Tag.ACTION,0,0,""); 
     }
+
+    
 
 }

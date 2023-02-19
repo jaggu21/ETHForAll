@@ -12,6 +12,7 @@ import { Container,Row,Col,Button,Card} from 'react-bootstrap';
 import Home from './Home';
 import Create from './AddEvent';
 import Code from './Home/QRCode/QRcode'
+import Rate from './Rate';
 
 import {useLivepeerProvider} from "@livepeer/react";
 import { Auth, useAuth } from "@arcana/auth-react";
@@ -97,6 +98,7 @@ function App({auth}) {
           <Routes>
             <Route path="/" element={<Home web3Handler={onLogin} account={account}/>} />
             <Route path="/create" element={<Create web3Handler={onLogin} account={account} drate={drate} auth={auth}/>}/>
+            <Route path="/rate" element={<Rate web3Handler={onLogin} account={account} drate={drate} auth={auth}/>}/>
             <Route path="/verifyAge" element={<Code web3Handler={onLogin} account={account}/>}/>
           </Routes>
         ) : (
