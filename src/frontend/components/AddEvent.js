@@ -17,7 +17,7 @@ const Create = ({web3Handler,account,drate,auth}) => {
   const [description,setDescription] = useState()
   const [language,setLanguage] = useState()
   const [tag,setTag] = useState() 
-  const [video,setVideo] = useState()
+  const [video,setVideo] = useState(null)
 
   const {
     mutate: createAsset,
@@ -70,9 +70,20 @@ const Create = ({web3Handler,account,drate,auth}) => {
     }
   }
 
+  const uploadToLivepeer = async(e) =>{ 
+    if (e.target.files) {
+      console.log("Uploading Video")
+      setVideo(e.target.files[0]);
+      await createAsset?.();
+    }
+  }
+
 
   const addNewEvent = async() =>{
-    await(await drate.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image)).wait()
+    let contract = await drate;   
+    console.log(contract," CONTRACT ")
+    let txn = await(contract.addEvent(parseInt(eventType),name,description,parseInt(language),parseInt(tag),image))
+    console.log(txn, " HASH ")
   }
 
   return (
@@ -121,15 +132,7 @@ const Create = ({web3Handler,account,drate,auth}) => {
 
               <Form.Control onChange={(e) => setDescription(e)} style={{background:"black",height:"4vw",color:"#FCE44D"}} required type="textarea" rows="5" placeholder="Event Description"/>
 
-              <Form.Control type="file" style={{background:"black",color:"#FCE44D"}} required name="file" 
-                onChange={(e) => {
-                  if (e.target.files) {
-                    console.log("Uploading Video")
-                    setVideo(e.target.files[0]);
-                    createAsset?.();
-                  }
-                }}
-              />
+              <Form.Control type="file" style={{background:"black",color:"#FCE44D"}} name="file" required onChange={uploadToLivepeer}/>
 
               <div className="d-grid px-0">
                 <Button onClick={addNewEvent} style={{background:"#FCE44D",color:"black"}} size="lg">

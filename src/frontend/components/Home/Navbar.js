@@ -1,7 +1,7 @@
 import {
     Link
 } from "react-router-dom";
-import { Navbar, Nav, Button, Container } from 'react-bootstrap'
+import { Navbar, Nav, Button, Container,Row,Col} from 'react-bootstrap'
 // import market from './market.png'
 import drate from "../../Assets/Logo/drate-low-resolution-color-logo.png"
 import makeBlockie from 'ethereum-blockies-base64';
@@ -33,16 +33,11 @@ const Navigation = ({ web3Handler, account }) => {
                     </Nav>
                     <Nav>
                         {account ? (
-                            <Nav.Link
-                                href={`https://etherscan.io/address/${account}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="button nav-button btn-sm mx-4">
-                                <Button variant="outline-light">
-                                    {account.slice(0, 5) + '...' + account.slice(38, 42)}
-                                </Button>
-
-                            </Nav.Link>
+                           <div>
+                                <img style={{height:"2vw",width:"2vw",marginTop:"0.3vw",marginRight:"0.5vw"}} src={makeBlockie(JSON.stringify(account))}/>
+                                <Button onClick={ageVerifier} variant="outline-light" style={{background:"#FCE44D",color:"black",marginTop:"0.3vw"}}>Verify Age</Button>
+                                <Button variant="outline-light" style={{background:"#FCE44D",color:"black",marginTop:"0.3vw",marginLeft:"0.5vw"}}>{account.slice(0, 5) + '...' + account.slice(38, 42)} </Button>
+                            </div>
                         ) : (
                             <div>
                                 <img style={{height:"2vw",width:"2vw",marginRight:"1vw"}} src={makeBlockie("8f39B2De2a23D70a74AB3325025eB0b2167C9F27")}/>

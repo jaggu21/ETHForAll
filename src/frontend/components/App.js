@@ -24,7 +24,7 @@ function App({auth}) {
   const [loggedIn,setLoggedIn] = useState(false); 
   const [account,setAccount] = useState(""); 
   const [drate,setDRate] = useState();   
-  // const auth = useAuth();
+  
   
  
 
@@ -52,38 +52,36 @@ function App({auth}) {
   }
 
   const onLogin = async () =>{
-    console.time('auth_init')
-    await auth.init()
-    console.timeEnd('auth_init')
-    const isLoggedIn = await auth.isLoggedIn()
+    // console.time('auth_init')
+    // await auth.init()
+    // console.timeEnd('auth_init')
+    // const isLoggedIn = await auth.isLoggedIn()
 
-    const accounts = await auth.provider.request({ method: 'eth_accounts' })
+    // const accounts = await auth.provider.request({ method: 'eth_accounts' })
+    // setAccount(accounts[0])
+    // console.log(accounts)
+
+    // console.log(auth)
+    // const provider = auth.provider;
+
+    // const sig = await provider.request({
+    //   method: 'eth_signTransaction',
+    //   params: [
+    //     {
+    //       from:accounts[0], // sender account address
+    //       gasPrice: 0,
+    //       to: accounts[0], // receiver account address
+    //       value: '0x00000000000000',
+    //     },
+    //   ],
+    // })
+    
+    setLoggedIn(true)
+    const accounts = await window.ethereum.request({method: 'eth_requestAccounts'}); 
+    const provider  = new ethers.providers.Web3Provider(window.ethereum)
     setAccount(accounts[0])
-    console.log(accounts)
-
-    console.log(auth)
-    const provider = auth.provider;
-
-    const sig = await provider.request({
-      method: 'eth_signTransaction',
-      params: [
-        {
-          from:accounts[0], // sender account address
-          gasPrice: 0,
-          to: accounts[0], // receiver account address
-          value: '0x00000000000000',
-        },
-      ],
-    })
-    
-    
-    // console.log(sig)
-
-    // const signer = await auth.provider.request({method:"eth_signTransaction",})
-    // console.log(signer)
-
-    loadContracts(sig) 
-    setLoggedIn(isLoggedIn)  
+    const signer = provider.getSigner()
+    loadContracts(signer)  
   }
 
   const loadContracts = async(signer) => { 
@@ -95,11 +93,11 @@ function App({auth}) {
   return (
     <BrowserRouter>
       { 
-      loggedIn ? (
+       loggedIn? (
           <Routes>
-            <Route path="/" element={<Home web3Handler={web3Handler} account={account}/>} />
-            <Route path="/create" element={<Create web3Handler={web3Handler} account={account} drate={drate} auth={auth}/>}/>
-            <Route path="/verifyAge" element={<Code web3Handler={web3Handler} account={account}/>}/>
+            <Route path="/" element={<Home web3Handler={onLogin} account={account}/>} />
+            <Route path="/create" element={<Create web3Handler={onLogin} account={account} drate={drate} auth={auth}/>}/>
+            <Route path="/verifyAge" element={<Code web3Handler={onLogin} account={account}/>}/>
           </Routes>
         ) : (
           <div>

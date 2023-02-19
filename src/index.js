@@ -9,9 +9,9 @@ import { createReactClient,studioProvider,LivepeerConfig } from "@livepeer/react
 const appAddress = '3fed620422308576aa17dbdf76df0bab8c715c69' 
 const auth = new AuthProvider(`${appAddress}`, { //required
       network: 'testnet', //defaults to 'testnet'
-      position: 'left', //defaults to right
-      theme: 'light', //defaults to dark
-      alwaysVisible: false, //defaults to true which is Full UI mode
+      position: 'right', //defaults to right
+      theme: 'dark', //defaults to dark
+      alwaysVisible: true, //defaults to true which is Full UI mode
       chainConfig: {
         chainId: CHAIN.POLYGON_MUMBAI_TESTNET, //defaults to CHAIN.ETHEREUM_MAINNET
         rpcUrl: 'https://polygon-mumbai.g.alchemy.com/v2/-Q3bwbk7Y-wznNCM9wzRsSffp7R8zNUs', //defaults to 'https://rpc.ankr.com/eth'
